@@ -27,7 +27,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Mark as preview
         run: |
@@ -42,11 +42,11 @@ jobs:
           # Show a banner so nobody mistakes it for the live site
           sed -i 's|<body>|<body>\n  <div style="position:fixed;top:0;left:0;right:0;z-index:10;padding:0.4rem;background:#c8102e;color:#fff;font:700 0.9rem/1.2 system-ui,sans-serif;text-align:center;letter-spacing:0.1em;">PREVIEW – not the live site</div>|' index.html
 
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: .
 
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
