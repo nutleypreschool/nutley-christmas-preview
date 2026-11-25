@@ -1,6 +1,6 @@
 # Publishes the preview site (preview.nutleychristmas.com).
 #
-# Only runs in the nutley-christmas-preview repo. In the main repo the job is
+# Only runs in the nutley-christmas-preview repo. In the main repo the jobs are
 # skipped, and the live site keeps publishing straight from the main branch.
 
 name: Deploy preview
@@ -20,12 +20,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     if: github.repository == 'nutleypreschool/nutley-christmas-preview'
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
 
@@ -48,5 +45,13 @@ jobs:
         with:
           path: .
 
+  # A separate job, so the upload has fully finished before deploying
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
         uses: actions/deploy-pages@v5
